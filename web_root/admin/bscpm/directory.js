@@ -226,7 +226,7 @@ function createContextMenus() {
         events: {
             show: function (opt) {
                 $('li div.selected').removeClass('selected');
-                $(this.context).children('div').addClass('selected');
+                $(this).children('div').addClass('selected');
             },
         },
         items: {
@@ -291,7 +291,7 @@ function createContextMenus() {
         events: {
             show: function (opt) {
                 $('li div.selected').removeClass('selected');
-                $(this.context).children('div').addClass('selected');
+                $(this).children('div').addClass('selected');
             },
         },
         items: {
