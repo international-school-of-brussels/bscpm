@@ -1,0 +1,1 @@
+[~[tlist_sql;Select dcid from  ~[temp.table.current.selection:Students]]~(dcid),[/tlist_sql]null]

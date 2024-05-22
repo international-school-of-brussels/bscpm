@@ -1,0 +1,7 @@
+
+<script>
+    $j(document).ready(function(){
+        $j($j($j("h2:contains('Page Management')").next()).find("tbody")).append("<tr><td><a href=\"/admin/bscpm/home.html\">Blue Steel CPM</a></td><td>Alternative CPM with save state, filtering, custom snippets,templates,Color coding, etc.</td></tr>")
+        
+    })
+</script>

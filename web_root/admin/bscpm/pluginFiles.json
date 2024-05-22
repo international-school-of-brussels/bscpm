@@ -1,0 +1,77 @@
+{
+    "plugins":[~[tlist_sql;SELECT
+    PLUGINDEF.id,
+    PLUGINDEF.NAME,
+    PLUGINDEF.DESCRIPTION,
+    PLUGINDEF.VERSION,
+    CASE PLUGINDEF.ISENABLED
+        WHEN 1
+        THEN 'true'
+        ELSE 'false'
+    END enabled,
+    COUNT(*)
+FROM
+    PS.PLUGINDEF
+INNER JOIN
+    PS.PLUGINDEFASSET
+ON
+    plugindef.ID = plugindefasset.PLUGINDEFID
+INNER JOIN
+    pSM_Asset
+ON
+    plugindefasset.assetid = psm_asset.ID
+GROUP BY
+    PLUGINDEF.id,
+    PLUGINDEF.NAME,
+    PLUGINDEF.DESCRIPTION,
+    PLUGINDEF.VERSION,
+    PLUGINDEF.ISENABLED
+order by name]
+    {
+        "id":~(id),
+        "name":"~(name)",
+        "description":"~(description;json)",
+        "version":"~(version)",
+        "enabled":~(enabled)
+    },[/tlist_sql]{}    
+],
+    "files":[~[tlist_sql;
+      SELECT
+ PLUGINDEF.id,
+	PLUGINDEF.NAME,
+	description,
+	version,
+	case isenabled
+	    when 1 then 'true'
+	    else 'false'
+	end enabled,
+	psm_asset.NAME filename,
+	cpmpath
+   FROM
+	PS.PLUGINDEF
+INNER JOIN
+	PS.PLUGINDEFASSET ON plugindef.ID = plugindefasset.PLUGINDEFID
+INNER JOIN
+	pSM_Asset ON plugindefasset.assetid = psm_asset.ID
+INNER JOIN
+	(
+		 SELECT
+			id,
+			name,
+			LOWER(REPLACE(sys_connect_by_path(upper(NAME),'/'),'/WEB_ROOT')) AS cpmpath
+		   FROM
+			PS.PSM_ASSETFOLDER 
+		START WITH upper(name) = 'WEB_ROOT' CONNECT BY PRIOR id = parentassetfolder_id) folders ON psm_asset.ASSETFOLDER_ID=folders.id
+]
+{
+    "pluginId":~(id),
+    "pluginName":"~(name;json)",
+    "description":"~(description;json)",
+    "version":"~(version;json)",
+    "enabled":~(enabled),
+    "filename":"~(filename;json)", 
+    "path":"~(cpmpath;json)"
+},
+[/tlist_sql]{}
+]
+}

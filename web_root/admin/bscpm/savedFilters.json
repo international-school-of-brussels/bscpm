@@ -1,0 +1,14 @@
+[~[tlist_sql;Select
+id,
+name,
+case when teacherid!=0 then 'User' else 'Global' end userdefined,
+filters from U_d87dashboardSavedFilters where teacherid in (0,~[x:userid]) order by upper(name)]
+    {
+        "id":~(id),
+        "name":"~(name)",
+        "type":"~(userDefined)",
+        "filters":~(saveFilters)
+    },
+[/tlist_sql]{}
+
+]

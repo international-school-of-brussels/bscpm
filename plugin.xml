@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://plugin.powerschool.pearson.com"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        description="Enhanced Custom Page Management Beta plugin for PowerSchool codename Blue Steel."
+        name="Blue Steel CPM"
+        version="1.922"
+        xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
+	 <links>
+        <link
+                title="Blue Steel Enhanced Custom Page Management plugin for PowerSchool"
+                display-text="Blue Steel CPM"
+                path="/admin/bscpm/home.html">
+            <ui_contexts>
+                <ui_context id="admin.header"/>
+            </ui_contexts>
+        </link>
+    </links>
+    <publisher name="Tejas Ambani">
+        <contact email="tejas_ambani@glenbard.org"/>
+    </publisher>
+</plugin>

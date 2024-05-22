@@ -1,0 +1,79 @@
+
+#uploadDropzone, #uploadDropzone * {
+  box-sizing: border-box; }
+
+#uploadDropzone {
+  min-height: 150px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background: white;
+}
+  #uploadDropzone.dz-clickable {
+    cursor: pointer; 
+  }
+#uploadDropzone.dz-clickable * {
+    cursor: default; 
+}
+#uploadDropzone.dz-clickable .dz-message, #uploadDropzone.dz-clickable .dz-message * {
+    cursor: pointer; 
+}
+ #uploadDropzone.dz-started .dz-message {
+    display: none;
+ }
+#uploadDropzone.dz-drag-hover {
+    border-style: solid; 
+}
+#uploadDropzone.dz-drag-hover .dz-message {
+    opacity: 0.5; 
+}
+#uploadDropzone .dz-preview:hover {
+    z-index: 1000; 
+}
+#uploadDropzone .dz-preview:hover .dz-details {
+    opacity: 1;
+}
+#uploadDropzone .dz-preview.dz-file-preview .dz-details {
+  opacity: 1; 
+}
+#uploadDropzone .dz-preview.dz-image-preview .dz-details {
+    -webkit-transition: opacity 0.2s linear;
+    -moz-transition: opacity 0.2s linear;
+    -ms-transition: opacity 0.2s linear;
+    -o-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear; 
+}
+.dz-error-message{
+    position:relative;
+    color:red;
+    top:0;
+}
+.dz-preview{
+    width:100%;
+    min-height:25px;
+    padding:2px;
+    font-size: 12px;
+    display:table-row;
+}
+.dz-preview:hover .dz-error-message{
+    display:table-row;
+}
+.dz-success-mark{
+    color:green;
+}
+.dz-error-mark{
+    color:red;
+}
+
+form.dz-clickable div.dz-preview:nth-child(odd){
+    background-color:lightgrey;
+}
+.previewsContainer{
+    display:table;
+    width:100%;
+}
+.cell{
+    display:table-cell;
+    padding:3px;
+}
+#pathLabel{
+    font-weight:bold;
+}

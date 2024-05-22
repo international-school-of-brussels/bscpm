@@ -1,0 +1,341 @@
+<!--
+TemplateName:Admin
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Data Dashboard</title>
+<!-- required scripts -->
+	~[wc:commonscripts] 
+<!-- Required style sheets: screen.css, and print.css --> 
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+	<script src="/scripts/lib/angular/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-chart/1.0.0-beta.1/ng-google-chart.min.js" type="text/javascript"></script>
+    <script src='dataSets.js'></script>
+    <script src="basicAngular.js"></script>
+    <style>
+        .pages a{
+            margin:3px;
+        }
+        table head{
+            cursor:pointer;
+        }
+        .sort{
+            width:12px;
+            float:right;
+        }
+        @media screen {
+    		.charts{
+    			columns: 1;
+    			-webkit-columns: 1;
+    			-moz-columns: 1;
+    		}
+    	}
+    	@media screen and (min-width: 1200px) {
+    		.charts{
+    			columns: 2;
+    			-webkit-columns: 2;
+    			-moz-columns: ;
+    		}`
+    	}
+        .charts li{
+            
+            list-style: none; 
+            display: inline-block;
+        }
+        .charts div{
+            
+        }
+        .tables li{
+            
+            list-style: none; 
+        }
+        .chart{
+            display:inline-block;
+        }
+        #filters tr td:nth-child(2),#filters tr td:nth-child(4){
+            text-align:center;
+            vertical-align:middle;
+        }
+        #tables table tr td:nth-child(n+1){
+            text-align:center;
+        }
+        .loading{
+            pointer-events: none;
+            opacity: 0.4;
+            content: "Loading";
+        }
+        h2 div{
+            font-weight: normal;
+            margin: 0 !important;
+            margin-bottom: 2px;
+            bottom: .2em;
+            right: 0;
+            position: absolute;
+            float: none;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        var savedFilters=[];
+        let userFilters=~[tlist_sql;select nvl(value,'new Array()') v from Prefs where name='dashboardFilters' and userid=~[x:userid] and rownum<2;nonemessage=new Array()]~(v)[/tlist_sql];
+        let globalFilters=~[tlist_sql;select nvl(value,'new Array()') v from Prefs where name='dashboardFilters' and userid is NULL AND schoolid is null and rownum<2;nonemessage=new Array()]~(v)[/tlist_sql];
+        for(let i=0;i<userFilters.length;i++){
+            savedFilters.push(userFilters[i]);
+        }
+        for(let i=0;i<globalFilters.length;i++){
+            savedFilters.push(globalFilters[i]);
+        }
+        var isDistrict=~[if.district.office]true[else]false[/if.district.office];
+        var userId=~[x:userId];
+    </script>
+</head> 
+<body> 
+	~[wc:admin_header_css] 
+    <!-- breadcrumb start --><!-- breadcrumb end --> 
+<!-- start of main menu and content --> 
+	~[wc:admin_navigation_css] 
+<!-- Start of Page --> 
+	<h1 id="reportName">Data Dashboard</h1> 
+<!-- start of content area --> 
+	<div  ng-app="dashboard" ng-controller="dashboardCtrl"  ng-cloak> 
+        <div style="display:flex;">
+            <div class="box-round" style="width:300px;" ng-class="{'loading':loading}">
+                <h2>Data</h2>
+                <div ng-disabled="loading"> 
+                    <table class="grid">
+                        <tr>
+                            <td>Data Set</td>
+                            <td><select ng-disable="loading" ng-model="pq" ng-options="option.name for option in pqlist" ng-change="loadAdditional();" ></select></td>
+                            </tr>
+                            <tr ng-show="pq.description">
+                                <td colspan="2">{{pq.description}}</td>
+                            </tr>
+                            <tr ng-repeat="parameter in additionalParameters">
+                            <td>{{parameter.description}}</td>
+                            <td>
+                            <span ng-switch="parameter.type">
+                            <input ng-switch-when="text" type="text" name="{{parameter.name}}" ng-model="parameter.value"/>
+                            <input ng-switch-when="hidden" type="hidden" name="{{parameter.name}}" ng-model="parameter.value" />
+                            <input ng-switch-when="date" type="date" name="{{parameter.name}}" ng-model="parameter.value" />
+                            <select ng-switch-when="select" name="{{parameter.name}}" ng-options="option.value as option.name for option in parameter.options" ng-model="parameter.value"></select>
+                            </span>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                    <div class="center">
+                        <button type="button" ng-disable="loading" ng-click="loadData()">Load Data</button>
+                            
+                    </div>
+                </div> 
+            </div>
+            <div class="box-round" style="width:800px;" ng-show="data.length>0"  ng-class="{'loading':filterLoading}">
+                <h2>Filters
+                <div>
+                    <button type="button" ng-click="saveFilters();">Save Filter</button>
+                    <button type="button" ng-show="allowGlobal" ng-click="saveFilters(true);">Save Global Filter</button>
+                </div>
+                </h2>
+                <p ng-show="savedFilters.length>0">
+                    Load Filter 
+                    <select ng-model="selectedFilter" ng-change="loadFilters();" ng-options="sfilter.name group by sfilter.type for sfilter in savedFilters">
+                        <option value="">-- Saved Filters --</option>
+                    </select>
+                    <button type="button" ng-click="deleteFilter();" class="btn btn-default" ng-show="allowFilterDelete()">
+                        <span class="screen_readers_only">remove filter</span>
+                        <em class="ui-icon ui-icon-white ui-icon-minus ps-icon ps-minus ps-icon-btn"></em>
+                    </button>
+                </p>
+                
+                <table class="grid" id="filters" >
+                    <tr>
+                        <td colspan="3">Basic Filter <input ng-model="genericFilter" ng-change="resetSavedFilter()"/>
+                        <td>
+                            <button type="button" ng-click="addFilter();" class="btn btn-default">
+                                <span class="screen_readers_only">add filter</span>
+                                <em class="ui-icon ui-icon-white ui-icon-plusthick ps-icon ps-plus ps-icon-btn"></em>
+                            </button>
+                        </td>
+                            
+                    </tr>
+                    <tr ng-repeat="filter in filters">
+                        <td><select ng-model="filter.column" ng-options="column.columnName for column in filterOptions" ng-change="resetSavedFilter()"></select></td>
+                        <td>
+                            <span ng-switch="filter.column.type">
+                                <select ng-model="filter.operator" ng-switch-when="string" ng-change="resetSavedFilter()">
+                                    <option value="contains">Contains</option>
+                                    <option value="doesNotContain">Does not Contain</option>
+                                    <option value="=">Equal</option>
+                                    <option value="notEqual">Not Equal</option>
+                                    <option value="startWith">Start With</option>
+                                    <option value="endWith">End With</option>
+                                </select>
+                                <select ng-model="filter.operator" ng-switch-when="number" ng-change="resetSavedFilter()">
+                                    <option value="=">=</option>
+                                    <option value="#">#</option>
+                                    <option value=">">&gt;</option>
+                                    <option value=">=">&gt;=</option>
+                                    <option value="<">&lt;</option>
+                                    <option value="<=">&lt;=</option>
+                                </select>
+                                <span ng-switch-default>=</span>
+                            </span>
+                        </td>
+                        <td>
+                             <span ng-switch="filterInput(filter)">
+                                <select ng-switch-when="dropdown" ng-options="option.value as option.name for option in filter.column.options" ng-model="filter.value" ng-show="filter.column.options" ng-change="resetSavedFilter()"></select>
+                                <input ng-switch-when="text" type="text" ng-model="filter.value"  ng-change="resetSavedFilter()"/>
+                                <input ng-switch-when="textMutliple" type="text" placeholder="Comma seperate values" ng-model="filter.value"  ng-change="resetSavedFilter()"/>
+                                <select ng-switch-when="boolean" ng-model="filter.value" ng-show="filter.column.type=='boolean'"  ng-change="resetSavedFilter()">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                                <span ng-switch-default></span>
+                            </span>
+                        </td>
+                        <td>
+                            <button type="button" ng-click="removeFilter($index);" class="btn btn-default">
+                                <span class="screen_readers_only">remove filter</span>
+                                <em class="ui-icon ui-icon-white ui-icon-minus ps-icon ps-minus ps-icon-btn"></em>
+                            </button>
+                        </td>
+                        
+                    </tr>
+                </table>
+                <div class="center">
+                    <button type="button" ng-click="filter();">Filter</button>
+                    <button type="button" ng-click="resetFilter();">Reset</button>
+                    <input type="checkbox" ng-model='filterCurrentSelection' ng-show="showCurrentSelection"  value="1"/>Use Current Selection
+                </div>
+                
+            </div>
+        </div>
+        <p ng-show="loading">
+            {{pq.loadingMessage}}<br />
+            <img src="/images/loadingbarblue.gif" />
+        </p>
+        <h3 ng-hide="loading" >{{filteredData.length}} of {{data.length}} records</h3>
+        <div>
+                <ul  class="tabs">
+                    <li ng-class="{selected:tab=='charts'}"><a ng-click="switchTab('charts')">Graphs</a></li>
+                    <li ng-class="{selected:tab=='tables'}" ><a ng-click="switchTab('tables')">Tables</a></li>
+                    <li ng-class="{selected:tab=='courses'}" ng-show="showCourses"><a ng-click="switchTab('courses')">Courses</a></li>
+                    <li ng-class="{selected:tab=='teachers'}" ng-show="showTeachers"><a ng-click="switchTab('teachers')">Teachers</a></li>
+                    ~[if.district.office]<li ng-class="{selected:tab=='departments'}"  ng-show="pq.type=='grades'"><a ng-click="switchTab('departments')">Departments</a></li>[/if.district.office]
+                    ~[if.district.office]<li ng-class="{selected:tab=='demographics'}"><a ng-click="switchTab('demographics')">Demographics</a></li>[/if.district.office]
+                    ~[if.district.office]<li ng-class="{selected:tab=='ethnicity'}"><a ng-click="switchTab('ethnicity')">Ethnicity</a></li>[/if.district.office]
+                    <li ng-class="{selected:tab=='data'}"><a ng-click="switchTab('data')">Data</a></li>
+                    
+                <li style="background: white;border: 0;margin: 5px;">
+                    <input type="checkbox" ng-model="showPercentages" ng-click="resetData()" value="1"/> Show Percentages</li>
+                </ul>
+            <div ng-show="showTab('charts')">
+                 <div ng-repeat="c in charts" google-chart chart="c.chartData" ng-show="c.chartData.data.rows[0].c.length>1" agc-on-select="selectedBar(selectedItem,c)" class="chart box-round"></div>
+                
+            </div>
+            <div ng-show="showTab('tables')">
+                <ul class="tables">
+                        <li ng-repeat="chart in charts" ng-if="chart.chartData.data.rows[0].c.length>1">
+                            <h2>{{chart.options.title}}</h2>
+                            <table class="grid">
+                                <thead>
+                                    <tr>
+                                        <th ng-repeat="col in chart.chartData.data.cols" ng-if="col.label">{{col.label}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="row in chart.chartData.data.rows">
+                                        <td class="center" ng-repeat="value in row.c" ng-if="columnCheck($index,chart.chartData.data);" >{{value.v| percent:showPercentages && $index!==0}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                </ul>
+            </div>
+            
+             <div ng-show="showTab('courses')">
+                <table class="grid" style="min-height:400px" >
+                    <thead>
+                        <tr>
+                            <th ng-repeat="col in courses.cols">{{col.columnName}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in courses.data | orderBy:courses.sortOrder:courses.reverse ">
+                            <td ng-repeat="col in courses.cols" class="center">{{row[col.field]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div ng-show="showTab('teachers')">
+                <table class="grid" style="min-height:400px" >
+                    <thead>
+                        <tr>
+                            <th ng-repeat="col in teachers.cols">{{col.columnName}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in teachers.data | orderBy:teachers.sortOrder:teachers.reverse">
+                            <td ng-repeat="col in teachers.cols" class="center">{{row[col.field]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div ng-show="showTab('departments')">
+                <div ng-repeat="c in departments.charts track by $index" google-chart chart="c.chartData" class="chart box-round"></div>
+            </div>
+            
+            <div ng-show="showTab('ethnicity')">
+                <div ng-repeat="c in ethnicity.charts track by $index" google-chart chart="c.chartData" class="chart box-round"></div>
+            </div>
+            
+            <div ng-show="showTab('demographics')">
+                <div ng-repeat="c in demographics  track by $index" google-chart chart="c.chartData" class="chart box-round"></div>
+            </div>
+            
+            <div ng-show="showTab('data')" class="center">
+                <a ng-if="downloadBtn" download="dl.csv" href="{{downloadBtn.href}}"><button>{{downloadBtn.name}}</button></a>
+                    <form method="post" action="/admin/SaveSelectedStudentsToSelection.action">
+                        <button button="submit" ng-click="studentSelection();">Student Selection ({{currentSelection.length}})</button>
+                    
+                        <input type="hidden" name="forward" value="/admin/home.html" />
+                        <input type="hidden" name="ids" ng-value="id" ng-repeat="id in currentSelection track by $index"  />
+                        <input type="hidden" name="selectionAction" value="replace" />
+                    </form>    
+                
+                <table class="grid" style="min-height:400px" >
+                    <thead>
+                        <tr>
+                            <th ng-repeat="heading in headers" ng-click="sortColumn(headers,$index);"><span>{{heading.columnName}}<img ng-src="{{sortImage(heading)}}" class="sort"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in currentRows | orderBy:sortOrder:reverse">
+                            <td ng-repeat="heading in headers">
+                                <span ng-switch="heading.field">
+                                <span ng-switch-when="ethnicity">{{row[heading.field]|decode:ethnicity}}</span>
+                                <span ng-switch-when="firstName"><a target="blank" ng-href="/admin/students/home.html?frn=001{{row['studentsDcid']}}">{{row[heading.field]}}</a></span>
+                                <span ng-switch-default>{{row[heading.field]}}</span>
+                                <span n
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="center pages">
+                    <a ng-click="setPage('previous');" ng-disabled="currentPage==1">Previous</a>
+                    {{currentPage+1}} of {{lastPage}}
+                    <select ng-change="setPage();" ng-model="pageSize" ng-options="option for option in pageList"></select>
+                    <a ng-click="setPage('next');" ng-disabled="currentPage==lastPage">Next</a>
+                </div>
+            </div>
+        </div> 
+    </div>
+<!-- end of content area --> 
+	~[wc:admin_footer_css] 
+</body> 
+</html>

@@ -1,0 +1,6 @@
+<script>
+    $j(document).ready(function(){
+        var a=$j("#pluginLinkDrawerTable tr td:contains('Blue Steel CPM')").find("a");
+        a.attr("href",a.attr("href")+"?goToFile="+encodeURI(window.location["pathname"]));
+    });
+</script>

@@ -1,0 +1,21 @@
+{
+    "filename":"~[gpv:filename]",
+    "path":"~[gpv:path]",
+    "days":[
+~[tlist_sql;  SELECT
+	to_char(to_date(TO_CHAR(whencreated,'mmddyyyy'),'mmddyyyy'),'mm/dd/yyyy') d,
+	listagg('{"id"'||chr(58)||'"'||id||'","who"'||chr(58)||'"'||whocreated||'","created"'||chr(58)||'"'||whencreated||'","comment"'||chr(58)||'"'||details||'"}',',') within GROUP(ORDER BY whencreated) versions
+   FROM
+	U_Versions
+  WHERE
+	U_Versions.filename = '~[gpv:filename]'
+	AND U_Versions.path = '~[gpv:path]'
+GROUP BY
+	to_date(TO_CHAR(whencreated,'mmddyyyy'),'mmddyyyy')
+ORDER BY
+	d DESC]
+        {"day":"~(d)","versions":[~(versions)]},[/tlist_sql]
+        null
+    ]
+}
+	

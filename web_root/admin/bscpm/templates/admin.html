@@ -1,0 +1,31 @@
+<!--
+TemplateName:Admin
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title><:Page Title:></title>
+<!-- required scripts -->
+	~[wc:commonscripts] 
+<!-- Required style sheets: screen.css, and print.css --> 
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+	~[wc:admin_header_css] 
+    <!-- breadcrumb start --><:Page Title:><!-- breadcrumb end --> 
+<!-- start of main menu and content --> 
+	~[wc:admin_navigation_css] 
+<!-- Start of Page --> 
+	<h1><:Page Title:></h1> 
+<!-- start of content area --> 
+	<div class="box-round"> 
+		 <h2>Section Title Text Goes Here</h2> 
+		 <p> 
+		 	Your paragraph text goes here.
+		 </p> 
+	</div> 
+<!-- end of content area --> 
+	~[wc:admin_footer_css] 
+</body> 
+</html>
