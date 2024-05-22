@@ -547,7 +547,7 @@ function loadFile(path,filename,custom,type,versionId){
     var createTabLoadFile=function(){
         var tabNumber=$("#openFiles ul li").length+1+currentlyloadingfile;
         currentlyloadingfile++;
-        while($("#openFiles ul li a[href=#tab-"+tabNumber+"]").add("#tab-"+tabNumber).length>0){
+        while ($('#openFiles ul li a[href=tab-' + tabNumber + ']').add('#tab-' + tabNumber).length > 0) {
             tabNumber++;
         }
         var tabName="tab-"+tabNumber;
