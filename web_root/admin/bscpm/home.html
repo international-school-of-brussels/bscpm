@@ -1,71 +1,65 @@
-~[if.~[version]<12.1]
-    ~[redirect:/admin/bscpm/home12.html]
-[/if]
-~[if.security.pagemod=/admin/customization/home.html]
-
-
-
+~[if.~[version]<12.1] ~[redirect:/admin/bscpm/home12.html] [/if] ~[if.security.pagemod=/admin/customization/home.html]
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Blue Steel CPM</title>
-		<script type="text/javascript" src="/scripts/jquery-3.6.1/jquery-3.6.1.min.js"></script>
-		<script type="text/javascript" src="/scripts/jquery-ui-1.13.2.custom.min.js"></script>
-		<script type="text/javascript" src="/admin/javascript/md5.js"></script>
+    <head>
+        <title>Blue Steel CPM</title>
+        <script type="text/javascript" src="/scripts/jquery-3.6.1/jquery-3.6.1.min.js"></script>
+        <script type="text/javascript" src="/scripts/jquery-ui-1.13.2.custom.min.js"></script>
+        <script type="text/javascript" src="/admin/javascript/md5.js"></script>
         <link rel="stylesheet" href="/images/css/jquery-ui-1.13.2.custom.min.css" />
-		<script type="text/javascript">
-		    var $j=$;
-		</script>
+        <script type="text/javascript">
+            var $j = $;
+        </script>
         <script src="/scripts/keep-alive.js"></script>
 
-		<script type="text/javascript" src="bscpm.js"></script>
-		<link rel="stylesheet" href="bscpm.css" />
-		<script type="text/javascript" src="directory.js"></script>
-		<script type="text/javascript" src="contextMenu/jquery.contextMenu.js"></script>
-		<script type="text/javascript" src="contextMenu/jquery.ui.position.js"></script>
-		<link rel="stylesheet" href="contextMenu/jquery.contextMenu.css" />
-		<script src="dropzone/dropzone.js"></script>
-		<link rel="stylesheet" href="dropzone/dropzone.css" />
-		
-		<script type="text/javascript" src="dropdown/jquery.dropdown.min.js"></script>
-		<link rel="stylesheet" href="dropdown/jquery.dropdown.min.css" />
-		
-		<script type="text/javascript" src="toastr/toastr.min.js"></script>
-		<link rel="stylesheet" href="toastr/toastr.min.css" />
-		
-		<script type="text/javascript" src="are-you-sure/jquery.are-you-sure.js"></script>
-		
-		<script type="text/javascript" src="ace/ace.js"></script>
-		<script type="text/javascript" src="ace/ace-diff.js"></script>
-		<script type="text/javascript" src="ace/diff_match_patch.js"></script>
-		<script type="text/javascript" src="/scripts/keep-alive.js"></script>
-		
-		<script type="text/javascript">
-		    $(document).ready(function(e){
+        <script type="text/javascript" src="bscpm.js"></script>
+        <link rel="stylesheet" href="bscpm.css" />
+        <script type="text/javascript" src="directory.js"></script>
+        <script type="text/javascript" src="contextMenu/jquery.contextMenu.js"></script>
+        <script type="text/javascript" src="contextMenu/jquery.ui.position.js"></script>
+        <link rel="stylesheet" href="contextMenu/jquery.contextMenu.css" />
+        <script src="dropzone/dropzone.js"></script>
+        <link rel="stylesheet" href="dropzone/dropzone.css" />
+
+        <script type="text/javascript" src="dropdown/jquery.dropdown.min.js"></script>
+        <link rel="stylesheet" href="dropdown/jquery.dropdown.min.css" />
+
+        <script type="text/javascript" src="toastr/toastr.min.js"></script>
+        <link rel="stylesheet" href="toastr/toastr.min.css" />
+
+        <script type="text/javascript" src="are-you-sure/jquery.are-you-sure.js"></script>
+
+        <script type="text/javascript" src="ace/ace.js"></script>
+        <script type="text/javascript" src="ace/ace-diff.js"></script>
+        <script type="text/javascript" src="ace/diff_match_patch.js"></script>
+        <script type="text/javascript" src="/scripts/keep-alive.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function(e){
                 //Setting up Previous Settings
-		        var storedprefs=~[if#pref.~[displayprefuser:bscpmPrefs]=]{
-                             "showCustom":false,
-                             "plugin":null,
-                             "theme":"",
-                             "openFiles":""
-                         }[else#pref]~[displayprefuser:bscpmPrefs][/if#pref];
-		        if(storedprefs!==null){
-    		        if(storedprefs.showCustom){
-    		            $("#showCustomOnly").attr('checked',true);
-    		        }
-    		        if(storedprefs.plugin!==""){
-    		            $("#plugin").val(storedprefs.plugin);
-    		        }
-    		        if(storedprefs.theme!==""){
+                var storedprefs=~[if#pref.~[displayprefuser:bscpmPrefs]=]{
+                                    "showCustom":false,
+                                    "plugin":null,
+                                    "theme":"",
+                                    "openFiles":""
+                                }[else#pref]~[displayprefuser:bscpmPrefs][/if#pref];
+                if(storedprefs!==null){
+                    if(storedprefs.showCustom){
+                        $("#showCustomOnly").attr('checked',true);
+                    }
+                    if(storedprefs.plugin!==""){
+                        $("#plugin").val(storedprefs.plugin);
+                    }
+                    if(storedprefs.theme!==""){
                         $("#theme").find("option[value='"+storedprefs.theme+"']").attr("selected","selected");
-    		        }
-    		        if($("#goToFile").val()==="" && storedprefs.openFiles!==""){
-    		            $("#goToFile").val(storedprefs.openFiles);
-    		        }
-		        }
+                    }
+                    if($("#goToFile").val()==="" && storedprefs.openFiles!==""){
+                        $("#goToFile").val(storedprefs.openFiles);
+                    }
+                }
                 $('#unsavedChanges').areYouSure({'message':"You have unsaved files. Stay on the page to save your changes."});
-            	createContextMenus();
+                createContextMenus();
                 //Setting up Dialogs
                 $("#about").dialog({
                     autoOpen:false,
@@ -73,7 +67,7 @@
                     width:350,
                     modal:true
                 });
-            	$("#new").dialog({
+                $("#new").dialog({
                     autoOpen: false,
                     height: 350,
                     width: 350,
@@ -97,7 +91,7 @@
                         }
                     ],
                     close:function(){
-                        
+
                         $("#newError").html("").removeClass("ui-state-error");
                         $("#newForm").trigger("reset");
                         $("#newForm input").each(function(){
@@ -138,8 +132,8 @@
                                 }else{
                                     alert("failure");
                                 }
-                                
-                                
+
+
                             }
                         },
                         {
@@ -152,7 +146,7 @@
                     close:function(){
                         $("#versionTable").empty();
                     }
-                    
+
                 });
                 $("#templateVariables").dialog({
                     autoOpen:false,
@@ -178,7 +172,7 @@
                         }
                     }
                 });
-                
+
                 //Setting up version selection
                 $("#versionTable").on("click",".versionRow",function(){
                     $("#versionTable").find("tr").each(function(){
@@ -201,11 +195,11 @@
                         $("#createBtn").trigger('click');
                     }
                 });
-                 $('#templateVariables table tbody').on("keypress",'input',function(e) {
+                $('#templateVariables table tbody').on("keypress",'input',function(e) {
                     if (e.keyCode == $.ui.keyCode.ENTER) {
                         buttons= $("#templateVariables").dialog("option","buttons");
                         buttons['Insert'].apply($("#templateVariables"));
-                        
+
                     }
                 });
                 //Dialogs done
@@ -214,41 +208,41 @@
                 $("#showCustomOnly").on("change",savePrefs);
                 $('#plugin').on("change",filterFiles);savePrefs
                 $('#plugin').on("change",savePrefs);
-            	var typingTimer;                //timer identifier
+                var typingTimer;                //timer identifier
                 var doneTypingInterval = 750;  //time in ms, 5 second for example
-                
+
                 //on keyup, start the countdown
                 $('#search').keyup(function(){
                     clearTimeout(typingTimer);
                     typingTimer = setTimeout(filterFiles, doneTypingInterval);
                 });
-                
-                //on keydown, clear the countdown 
+
+                //on keydown, clear the countdown
                 $('#searchInput').keydown(function(){
                     clearTimeout(typingTimer);
                 });
                 $("#refreshFileTreeBtn").on('click',function(e){
                     $("#searchInput").val("");
                     $("#searchType").each(function(){
-                       if($(this).val()=='file'){
-                           $(this).attr("checked",true);
-                       }
+                        if($(this).val()=='file'){
+                            $(this).attr("checked",true);
+                        }
                     });
                     $("#showCustomOnly").attr("checked",false);
                     $("#plugin").val("");
-                	if(!loggedIn()){
-                	    var success={
-                	        callback:createFileTree,
-                	        parameter:["#fileTree"]
-                	    };
-                	    loggin(success);
-                	}else{
-                	    $("#fileTree").empty();
+                if(!loggedIn()){
+                    var success={
+                        callback:createFileTree,
+                        parameter:["#fileTree"]
+                    };
+                    loggin(success);
+                }else{
+                    $("#fileTree").empty();
                         createFileTree("#fileTree");
-                	}
+                }
                 });
                 //Search box setup Done
-               //Setting heights
+                //Setting heights
                 var fileTree=$(window).outerHeight(true)-($("#container").outerHeight(true)+$("#search").outerHeight(true)+30);
                 if(fileTree<100){
                     fileTree=100;
@@ -279,10 +273,10 @@
                     }else{
                         $(e.currentTarget).html("Fullscreen");
                     }
-                    fullscreenToggle(); 
+                    fullscreenToggle();
                 });
                 $("#aboutBtn").on("click",function(){
-                   $("#about").dialog("open"); 
+                    $("#about").dialog("open");
                 });
                 $("#exportedBtn").on("click",function(){
                         var selected=selectedFiles($("#obeyFilter").prop("checked"));
@@ -291,15 +285,15 @@
                         $("#downloadForm").submit();
                     }else{
                         alert("Please select a file(s)");
-                    }    
+                    }
                 });
                 $("#folderTab").on("click",function(){
-                   slide();
+                    slide();
                 });
                 $("#expand").on("click",function(e){
                     expand();
                 });
-                
+
                 $("#collapse").on("click",function(e){
                     collapse();
                 });
@@ -310,47 +304,47 @@
                     }
                     savePrefs();
                 });
-            	$("#fileTree").on('click',"li[item-type=directory] div",function(e){
-            	    if(e.shiftKey){
-                	    openCloseDir($(e.currentTarget).children().filter("div"),"expand");
-            	    }else{
-                	    openCloseDir($(e.currentTarget).children().filter("div"));
-            	    }
-            	});
-                $("#fileTree").on('click',"li div",function(e){
-                     if (e.shiftKey) {
-                         if($(this).hasClass("selected")){
-                	        $(this).removeClass('selected');
-                         }else{
-                	        $(this).addClass('selected');
-                         }
+                $("#fileTree").on('click',"li[item-type=directory] div",function(e){
+                    if(e.shiftKey){
+                        openCloseDir($(e.currentTarget).children().filter("div"),"expand");
                     }else{
-                	    $("li div.selected").removeClass('selected');
-                	    $(this).addClass('selected');
+                        openCloseDir($(e.currentTarget).children().filter("div"));
                     }
-            	});
+                });
+                $("#fileTree").on('click',"li div",function(e){
+                    if (e.shiftKey) {
+                        if($(this).hasClass("selected")){
+                        $(this).removeClass('selected');
+                        }else{
+                        $(this).addClass('selected');
+                        }
+                    }else{
+                    $("li div.selected").removeClass('selected');
+                    $(this).addClass('selected');
+                    }
+                });
                 $("#fileTree").on("click","li[item-type=file]", function(e){
                     if (e.shiftKey) {
-                        
+
                     }else{
-                        
-                	    var path="/";
-                	    path=$(this).attr("item-path")===""?"/":$(this).attr("item-path");
-                	    var file=$(this).attr("item-name");
-                	    if($(this).attr("item-custom")==="true"){
-                	        var custom=true;
-                	    }else{
-                	        custom=false;
-                	    }
-                	    loadFile(path,file,custom);
+
+                    var path="/";
+                    path=$(this).attr("item-path")===""?"/":$(this).attr("item-path");
+                    var file=$(this).attr("item-name");
+                    if($(this).attr("item-custom")==="true"){
+                        var custom=true;
+                    }else{
+                        custom=false;
                     }
-            	});
+                    loadFile(path,file,custom);
+                    }
+                });
                 tabs.delegate( "span.ui-icon-close", "click", function() {
-                   closeFile($( this ).closest( "li" ) );
+                    closeFile($( this ).closest( "li" ) );
                 });
                 $("#versionTable").on("click",".versionRow",function(){
-                   $(".versionRow").attr("selected",null);
-                   $(this).attr("selected","true");
+                    $(".versionRow").attr("selected",null);
+                    $(this).attr("selected","true");
                 });
                 $
                 //Setting up Snippet Dropdown
@@ -371,15 +365,15 @@
                                 if(!(checkReturnData(data))){
                                     //Login again
                                     var success={
-                            	        callback:loadSnippet
-                            	    };
-                            	    loggin(success);
+                                    callback:loadSnippet
+                                };
+                                loggin(success);
                                 }else{
                                     var editor=getEditors(true);
                                     if(editor.length>0){
                                         editor[0].insert(data.activeCustomText);
                                     }
-                               }
+                                }
                             },
                             failure:function(data){
                                 alert("Failed to load File");
@@ -388,7 +382,7 @@
                     };
                     loadSnippet();
                 });
-                
+
                 //Setting up Template Dropdown
                 $("#templates-dropdown").on("click","li",function(e){
                     var url=urlRetrieveData;
@@ -404,13 +398,13 @@
                         $.ajax(url,{
                             data:parameter,
                             success:function(data,status,jxhr){
-                                
+
                                 if(!(checkReturnData(data))){
                                         //Login again
                                         var success={
-                                	        callback:loadTemplate
-                                	    };
-                                	    loggin(success);
+                                        callback:loadTemplate
+                                    };
+                                    loggin(success);
                                 }else{
                                     //check for variables
                                     var text=data.activeCustomText;
@@ -435,7 +429,7 @@
                                             }
                                         }
                                     }
-                               }
+                                }
                             },
                             failure:function(data){
                                 alert("Failed to load File");
@@ -444,47 +438,47 @@
                     };
                     loadTemplate();
                 });
-                
-                
-            	$(window).resize(function(){
-            	    var fileTree=$(window).outerHeight(true)-$("#container").outerHeight(true)-$("#search").outerHeight(true)-25;
-            	    if(fileTree<100){
-            	        fileTree=100;
-            	    }
-            	    var filecontents=$(window).outerHeight(true)-$("#container").outerHeight(true)-30;
-            	    if(filecontents<100){
-            	        filecontents=100;
-            	    }
-            	    $("#fileTree").height(fileTree);
-            	    $("#filecontents").height(filecontents);
-            	    $("div[id$='-editor']").add("div.compare").add("div[id$='-gutter']").each(function(){
-            	        $(this).height($(window).height()-$("#editorButtonSet").height()-$("#container").height()-$("ul[role=tablist]").outerHeight(true)-35);
-            	    });
-            	    $("div.compare").each(function(){
-            	         $(this).height($(window).height()-$("#editorButtonSet").height()-$("#container").height()-$("ul[role=tablist]").outerHeight(true)-30);
-            	    })
-            	});
-            	$(window).bind('beforeunload',function(){
-            	    $("#openFiles ul").children("li").each(function(){
-            	        closeFile($(this),false,false);
-            	    });
-            	});
-            	if(!loggedIn()){
-            	    var success={
-            	        callback:function(){
-            	            loadDropdown("templates");
+
+
+                $(window).resize(function(){
+                    var fileTree=$(window).outerHeight(true)-$("#container").outerHeight(true)-$("#search").outerHeight(true)-25;
+                    if(fileTree<100){
+                        fileTree=100;
+                    }
+                    var filecontents=$(window).outerHeight(true)-$("#container").outerHeight(true)-30;
+                    if(filecontents<100){
+                        filecontents=100;
+                    }
+                    $("#fileTree").height(fileTree);
+                    $("#filecontents").height(filecontents);
+                    $("div[id$='-editor']").add("div.compare").add("div[id$='-gutter']").each(function(){
+                        $(this).height($(window).height()-$("#editorButtonSet").height()-$("#container").height()-$("ul[role=tablist]").outerHeight(true)-35);
+                    });
+                    $("div.compare").each(function(){
+                        $(this).height($(window).height()-$("#editorButtonSet").height()-$("#container").height()-$("ul[role=tablist]").outerHeight(true)-30);
+                    })
+                });
+                $(window).bind('beforeunload',function(){
+                    $("#openFiles ul").children("li").each(function(){
+                        closeFile($(this),false,false);
+                    });
+                });
+                if(!loggedIn()){
+                    var success={
+                        callback:function(){
+                            loadDropdown("templates");
                             loadDropdown("snippets");
                             createFileTree("#fileTree");
-            	        }
-            	    };
-            	    loggin(success);
-            	}else{
+                        }
+                    };
+                    loggin(success);
+                }else{
                     loadDropdown("templates");
                     loadDropdown("snippets");
                     createFileTree("#fileTree");
-            	}
-            	$.contextMenu({
-                    selector: "#openFiles ul li", 
+                }
+                $.contextMenu({
+                    selector: "#openFiles ul li",
                     items: {
                         "CloseOther": {
                             name: "Close Other",
@@ -507,155 +501,173 @@
                                 }
                                 unsavedChanges();
                             }
-                                
+
                         }
                     }
-            	
+
                 });
-            	//Upload stuff
-            	var dz=$("#uploadDropzone").dropzone({
-            	    paramName:"upload",
-            	    previewTemplate:$("#template").html(),
-            	    previewsContainer:"div.previewsContainer",
-            	    acceptedFiles:".svg,.binary,.css,.csv,.dmg,.exe,.ftl,.gif,.hqx,.htm,.html,.ico,.ics,.ifb,.jar,.javascript,.jpeg,.jpg,.js,.json,.macbinary ,.mov,.pdf,.png,.ps-savetodisk,.rpt,.sit,.swf,.text,.tif,.tiff,.tsv,.txt,.xml,.zip",
-            	    accept: function(file, done) {
-            	        if($("li[item-path='"+$("#fileUploadForm_filePath").val()+"'][item-name='"+file.name+"']").length>0){
-            	            if(confirm(file.name+" already exists in this folder. Would you like to overwrite the exisiting file?")){
-            	                done();
-            	            }else{
-            	                done("User Aborted");
-            	            }
-            	        }
+                //Upload stuff
+                var dz=$("#uploadDropzone").dropzone({
+                    paramName:"upload",
+                    previewTemplate:$("#template").html(),
+                    previewsContainer:"div.previewsContainer",
+                    acceptedFiles:".svg,.binary,.css,.csv,.dmg,.exe,.ftl,.gif,.hqx,.htm,.html,.ico,.ics,.ifb,.jar,.javascript,.jpeg,.jpg,.js,.json,.macbinary ,.mov,.pdf,.png,.ps-savetodisk,.rpt,.sit,.swf,.text,.tif,.tiff,.tsv,.txt,.xml,.zip",
+                    accept: function(file, done) {
+                        if($("li[item-path='"+$("#fileUploadForm_filePath").val()+"'][item-name='"+file.name+"']").length>0){
+                            if(confirm(file.name+" already exists in this folder. Would you like to overwrite the exisiting file?")){
+                                done();
+                            }else{
+                                done("User Aborted");
+                            }
+                        }
                         else { done(); }
-                      }
-            	});
-            	$("#uploadDia").dialog({
-            	    autoOpen:false,
-            	    modal:true,
-            	    width:500,
-            	    height:350,
-            	    buttons:{
+                        }
+                });
+                $("#uploadDia").dialog({
+                    autoOpen:false,
+                    modal:true,
+                    width:500,
+                    height:350,
+                    buttons:{
                         "Done": function() {
                             $(this).dialog( "close" );
                         }
                     },
-            	    close:function(){
-            	        var path=$("#fileUploadForm_filePath").val();
-            	        if(path=="/" || path===""){
-            	            createFileTree($("#fileTree"));
-            	        }else{
-            	            var pathparts=path.split("/");
-            	            folder=pathparts[pathparts.length-1];
-            	            var pathToFolder=path.replace("/"+folder,"");
-            	            refreshDirectory($("li[item-path='"+pathToFolder.replace("//","/")+"'][item-name='"+folder+"']"));
-            	        }
-            	        $("div.previewsContainer").empty();
-            	        $("#fileUploadForm_filePath").val("");
-            	    }
-            	});
-            
-            	setInterval(function(){ 
-            	   var url="/ws/session/seconds-remaining?_="+new Date().getTime();
-            	   $.ajax(url,{
-            	        context: document.body,
+                    close:function(){
+                        var path=$("#fileUploadForm_filePath").val();
+                        if(path=="/" || path===""){
+                            createFileTree($("#fileTree"));
+                        }else{
+                            var pathparts=path.split("/");
+                            folder=pathparts[pathparts.length-1];
+                            var pathToFolder=path.replace("/"+folder,"");
+                            refreshDirectory($("li[item-path='"+pathToFolder.replace("//","/")+"'][item-name='"+folder+"']"));
+                        }
+                        $("div.previewsContainer").empty();
+                        $("#fileUploadForm_filePath").val("");
+                    }
+                });
+
+                setInterval(function(){
+                var url="/ws/session/seconds-remaining?_="+new Date().getTime();
+                $.ajax(url,{
+                        context: document.body,
                         success: function(timeJSON) {
                             loggedInState=true;
                             $("#adminLogoutMessage").html("").removeClass("error");
                             $("#loginDia").dialog("close");
-                          },
-            		    statusCode: {
-            		        401: function() {
+                            },
+                        statusCode: {
+                            401: function() {
                                 loggedInState=true;
-                                
+
                                 loggin(null,null,true);
                                 $("#adminLogoutMessage").html("Admin Logged out. Plugin filter, save state, and export may not work as expected <a href=\"/admin/\" target=\"_blank\">Log In</a>").addClass("error");
                         }
-            		  }
-            	   })
-            	}, 30000);
+                    }
+                })
+                }, 30000);
             });
-	</script>
-		
-		<style type="text/css">
-        	#openFiles { margin-top: 1em; }
-        	#openFiles li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
-		</style>
-	</head>
-	<body>
-	    <span id="folderTab" class="hide">File Explorer</span>
-	<!-- start of shell for entire page  -->
-		<div id="container" class="group">
-			<!-- start of shell for entire page  -->
-			<!-- logo, school, term, logoff, help -->
-			<div id="header" class="group">
-				<ul id="tools" class="group">
-					<li id="userName" title="~[wc:login_lastlogin]">~[text:psx.common.welcome] <span>~[x:username;firstlast]</span></li>
-					<li>
-						<a href="javascript:helpwindow('~[x:help_pagelink]')" id="btnHelp" title="~[text:psx.common.help_title]" accesskey="?">~[text:psx.common.help]</a>
-					</li>
-					<li>
-						<a href="~loff" id="btnLogout" target="_top" title="Sign Out" accesskey="l">Sign Out</a>
-					</li>
-				</ul>
-    				<div id="branding-powerschool">
-    				    
-				        <a href="/admin/home.html" target="_top"></a>
-    				</div>
-				<div id="cust-content-header">
-					~[cust.insertion_point:content.header]
-				</div>
-			</div>
-			<!--logo, school, term, logoff, help -->
-			<div id="usercontext-bar">
-				<a href="/admin/home.html" id="linkBrandingHome" target="_top"></a>
-				<div id="breadcrumbs">
-					<!--Breadcrumbs in page, close in admin-navigation wc-->
-					<!-- breadcrumb start --><a href="/admin/home.html" target="_top">PowerSchool</a> &gt; Blue Steel CPM<!-- breadcrumb end -->
-					<div id="adminLogoutMessage"></div>
-				</div>
-			</div>
-		</div>
-		<div id="workspace">
-			<div id="navigation">
-			    <div id="menus"></div>
-				<div id="search">
-				    <div>
-					Search:<br /><span class="deleteicon">
-						<input type="text" id="searchInput">
-						<span></span>
-					</span>
-					</div>
-					<div>
-    					<select id="plugin">
-    					</select>
-    				</div>
-    			    <div>
-        				<span class="nobreak">Show Custom Only
-    						<input type="checkbox" id="showCustomOnly">
-    						<a id="refreshFileTreeBtn"><img src="images/refresh.png" style="width:16px;vertical-align:middle" title="Refresh Files" /></a>
-    					</span>
-					</div>
-					<hr>
-					    <span class="customBtn" id="exportedBtn">Export Custom Pages</span>
-					    <span class="nobreak" style="display:inline;"><input type="checkbox" id="obeyFilter" name="obeyFilter" />Obey Filters</span>
-						<form method="post" id="downloadForm" target="_" action="/admin/customization/createPackage.action" >
-    					    <input type="hidden" id="PluginFileName" name="PluginFileName" name="" value="BSCPM_Download"/>
-    					    <input type="hidden" id="SelectedFileList" name="SelectedFileList" />
-					    </form>
-				</div>
-				<div id="fileTree" item-name="" item-path=""></div>
-				
-			</div>
-			<div id="editor">
-			    <div id="tabMenu"></div>
-				<div id="editorButtonSet">
-				    <button class="customBtn" type="button" id="publish">Publish</button>
-				    <button class="customBtn" type="button" data-jq-dropdown="#snippets-dropdown">Snippets</button>
-				    <div id="snippets-dropdown" class="jq-dropdown">
+        </script>
+
+        <style type="text/css">
+            #openFiles {
+                margin-top: 1em;
+            }
+            #openFiles li .ui-icon-close {
+                float: left;
+                margin: 0.4em 0.2em 0 0;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <span id="folderTab" class="hide">File Explorer</span>
+        <!-- start of shell for entire page  -->
+        <div id="container" class="group">
+            <!-- start of shell for entire page  -->
+            <!-- logo, school, term, logoff, help -->
+            <div id="header" class="group">
+                <ul id="tools" class="group">
+                    <li id="userName" title="~[wc:login_lastlogin]">
+                        ~[text:psx.common.welcome] <span>~[x:username;firstlast]</span>
+                    </li>
+                    <li>
+                        <a
+                            href="javascript:helpwindow('~[x:help_pagelink]')"
+                            id="btnHelp"
+                            title="~[text:psx.common.help_title]"
+                            accesskey="?"
+                            >~[text:psx.common.help]</a
+                        >
+                    </li>
+                    <li>
+                        <a href="~loff" id="btnLogout" target="_top" title="Sign Out" accesskey="l">Sign Out</a>
+                    </li>
+                </ul>
+                <div id="branding-powerschool">
+                    <a href="/admin/home.html" target="_top"></a>
+                </div>
+                <div id="cust-content-header">~[cust.insertion_point:content.header]</div>
+            </div>
+            <!--logo, school, term, logoff, help -->
+            <div id="usercontext-bar">
+                <a href="/admin/home.html" id="linkBrandingHome" target="_top"></a>
+                <div id="breadcrumbs">
+                    <!--Breadcrumbs in page, close in admin-navigation wc-->
+                    <!-- breadcrumb start --><a href="/admin/home.html" target="_top">PowerSchool</a> &gt; Blue Steel
+                    CPM<!-- breadcrumb end -->
+                    <div id="adminLogoutMessage"></div>
+                </div>
+            </div>
+        </div>
+        <div id="workspace">
+            <div id="navigation">
+                <div id="menus"></div>
+                <div id="search">
+                    <div>
+                        Search:<br /><span class="deleteicon">
+                            <input type="text" id="searchInput" />
+                            <span></span>
+                        </span>
+                    </div>
+                    <div>
+                        <select id="plugin"></select>
+                    </div>
+                    <div>
+                        <span class="nobreak"
+                            >Show Custom Only
+                            <input type="checkbox" id="showCustomOnly" />
+                            <a id="refreshFileTreeBtn"
+                                ><img
+                                    src="images/refresh.png"
+                                    style="width: 16px; vertical-align: middle"
+                                    title="Refresh Files"
+                            /></a>
+                        </span>
+                    </div>
+                    <hr />
+                    <span class="customBtn" id="exportedBtn">Export Custom Pages</span>
+                    <span class="nobreak" style="display: inline"
+                        ><input type="checkbox" id="obeyFilter" name="obeyFilter" />Obey Filters</span
+                    >
+                    <form method="post" id="downloadForm" target="_" action="/admin/customization/createPackage.action">
+                        <input type="hidden" id="PluginFileName" name="PluginFileName" name="" value="BSCPM_Download" />
+                        <input type="hidden" id="SelectedFileList" name="SelectedFileList" />
+                    </form>
+                </div>
+                <div id="fileTree" item-name="" item-path=""></div>
+            </div>
+            <div id="editor">
+                <div id="tabMenu"></div>
+                <div id="editorButtonSet">
+                    <button class="customBtn" type="button" id="publish">Publish</button>
+                    <button class="customBtn" type="button" data-jq-dropdown="#snippets-dropdown">Snippets</button>
+                    <div id="snippets-dropdown" class="jq-dropdown">
                         <ul class="jq-dropdown-menu"></ul>
                     </div>
-				    <button type="button" class="customBtn" data-jq-dropdown="#templates-dropdown">Templates</button>
-				    <div id="templates-dropdown" class="jq-dropdown">
+                    <button type="button" class="customBtn" data-jq-dropdown="#templates-dropdown">Templates</button>
+                    <div id="templates-dropdown" class="jq-dropdown">
                         <ul class="jq-dropdown-menu"></ul>
                     </div>
                     <button class="customBtn" id="collapse">Collapse</button>
@@ -698,37 +710,33 @@
                             <option value="ace/theme/tomorrow_night_eighties">Tomorrow Night 80s</option>
                             <option value="ace/theme/twilight">Twilight</option>
                             <option value="ace/theme/vibrant_ink">Vibrant Ink</option>
-                            </optgroup>
+                        </optgroup>
                     </select>
                     <button class="customBtn" type="button" id="aboutBtn">About~([pref]ewsPrefs-U~[x:userid])</button>
-				</div>
-        		<div id="openFiles">
-        		    
-			        <div id="tabsMenus"></div>
-        		    <ul>
-        		       
-        		    </ul>
-        		</div>
-			</div>
-		</div>
-		<form id="unsavedChanges"></form>
-		<div id="new" title="New">
-		    
-		    <div id="newError"></div>
-			<p class="validateTips">
-				Do not use any spaces and it must end with a file extension of html,cc,json, and js.
-			</p>
-			<form id="newForm" onsubmit="return false;">
-			    <div id="newError"></div>
-				<label for="newAssetName">Name</label>
-				<input id="newAssetName" name="newAssetName" type="text" />
-				<input type="hidden" name="newAssetPath" id="newAssetPath" />
-				<input type="hidden" id="newAssetType" name="newAssetType" />
-			</form>
-		</div>
-		<div id="loginDia">
-		    <div id="loginError"></div>
-		    <form id="loginForm" action="/admin/home.html" method="POST" autocomplete="off" >
+                </div>
+                <div id="openFiles">
+                    <div id="tabsMenus"></div>
+                    <ul></ul>
+                </div>
+            </div>
+        </div>
+        <form id="unsavedChanges"></form>
+        <div id="new" title="New">
+            <div id="newError"></div>
+            <p class="validateTips">
+                Do not use any spaces and it must end with a file extension of html,cc,json, and js.
+            </p>
+            <form id="newForm" onsubmit="return false;">
+                <div id="newError"></div>
+                <label for="newAssetName">Name</label>
+                <input id="newAssetName" name="newAssetName" type="text" />
+                <input type="hidden" name="newAssetPath" id="newAssetPath" />
+                <input type="hidden" id="newAssetType" name="newAssetType" />
+            </form>
+        </div>
+        <div id="loginDia">
+            <div id="loginError"></div>
+            <form id="loginForm" action="/admin/home.html" method="POST" autocomplete="off">
                 <table>
                     <tr>
                         <td>User Name</td>
@@ -744,12 +752,12 @@
         <div id="uploadDia">
             Upload to <span id="pathLabel"></span><br />
             <!--"/powerschool-sys-mgmt/custompages/fileUpload.action"-->
-            <form action="/ws/cpm/fileUpload" id="uploadDropzone" enctype="multipart/form-data" >
+            <form action="/ws/cpm/fileUpload" id="uploadDropzone" enctype="multipart/form-data">
                 <input type="hidden" name="filePath" value="" id="fileUploadForm_filePath" />
-                <input type="hidden" name="fileRoot" value="null"/>
+                <input type="hidden" name="fileRoot" value="null" />
                 <div class="dz-message">Drop files here or click to upload.</div>
                 <div class="previewsContainer"></div>
-                <div id="template" style="display:none;">
+                <div id="template" style="display: none">
                     <div class="dz-preview dz-file-preview">
                         <div class="cell"><span data-dz-name></span></div>
                         <div class="cell">
@@ -764,10 +772,9 @@
             </form>
         </div>
         <div id="versionDiag">
-            
             <center>
                 <div id="calendar"></div>
-                <div id='versionTable'></div>
+                <div id="versionTable"></div>
             </center>
             <input type="hidden" id="versionPath" />
             <input type="hidden" id="versionFileName" />
@@ -775,15 +782,16 @@
         </div>
         <div id="about" title="About">
             Special thanks to the follow people for doing the hard stuff
-            <ul style="clear:both">
+            <ul style="clear: both">
                 <li><a target="blank" href="http://medialize.github.io/jQuery-contextMenu/">Jquery Context Menu</a></li>
                 <li><a target="blank" href="http://ace.c9.io/#nav=about">Ace Editor</a></li>
                 <li><a target="blank" href="http://www.dropzonejs.com/">DropzoneJS</a></li>
                 <li><a target="blank" href="https://github.com/CodeSeven/toastr">Toastr</a></li>
                 <li><a target="blank" href="https://github.com/benkeen/ace-diff">Ace-Diff</a></li>
             </ul>
-            If you are like it or have any issues, or need some help customizing, email me <a target="blank" href="mailto:tejas.ambani1@gmail.com">tejas.ambani1@gmail.com</a>
-             <br /><center><img src="images/blue_steel.jpg" class="blueSteel" /></center>
+            If you are like it or have any issues, or need some help customizing, email me
+            <a target="blank" href="mailto:tejas.ambani1@gmail.com">tejas.ambani1@gmail.com</a> <br />
+            <center><img src="images/blue_steel.jpg" class="blueSteel" /></center>
         </div>
         <div id="templateVariables" title="Template Variables">
             <table>
@@ -791,8 +799,7 @@
                     <th>Variable</th>
                     <th>Value</th>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody></tbody>
             </table>
             <input type="hidden" id="templateContents" />
         </div>
@@ -801,9 +808,8 @@
             <input type="hidden" value="" name="[prefuser]bscpmPrefs" id="bscpmPrefs" />
             <input type="hidden" name="ac" value="prim" />
         </form>
-	</body>
+    </body>
 </html>
-
 
 [else]
 <!--
@@ -811,33 +817,33 @@ TemplateName:Admin
 -->
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Access Denied</title>
-<!-- required scripts -->
-	~[wc:commonscripts] 
-<!-- Required style sheets: screen.css, and print.css --> 
-	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
-	<link href="/images/css/print.css" rel="stylesheet" media="print">
-</head> 
-<body> 
-	~[wc:admin_header_css] 
-    <!-- breadcrumb start -->Access Denied<!-- breadcrumb end --> 
-<!-- start of main menu and content --> 
-	~[wc:admin_navigation_css] 
-<!-- Start of Page --> 
-	<h1>Access Denied</h1> 
-<!-- start of content area --> 
-	<div class="box-round"> 
-		 <h2>Access denied</h2> 
-		 <p> 
-		    In order to use Blue Steel CPM, you need access to the Stock CPM.<br /><br />
-		     Access to Custom Page Management is off for all users by default. To give users access you will need
-to override page permissions for the group. Instructions for overriding
-page permissions on the group page are in online help.
-		 </p> 
-	</div> 
-<!-- end of content area --> 
-	~[wc:admin_footer_css] 
-</body> 
+    <head>
+        <title>Access Denied</title>
+        <!-- required scripts -->
+        ~[wc:commonscripts]
+        <!-- Required style sheets: screen.css, and print.css -->
+        <link href="/images/css/screen.css" rel="stylesheet" media="screen" />
+        <link href="/images/css/print.css" rel="stylesheet" media="print" />
+    </head>
+    <body>
+        ~[wc:admin_header_css]
+        <!-- breadcrumb start -->Access Denied<!-- breadcrumb end -->
+        <!-- start of main menu and content -->
+        ~[wc:admin_navigation_css]
+        <!-- Start of Page -->
+        <h1>Access Denied</h1>
+        <!-- start of content area -->
+        <div class="box-round">
+            <h2>Access denied</h2>
+            <p>
+                In order to use Blue Steel CPM, you need access to the Stock CPM.<br /><br />
+                Access to Custom Page Management is off for all users by default. To give users access you will need to
+                override page permissions for the group. Instructions for overriding page permissions on the group page
+                are in online help.
+            </p>
+        </div>
+        <!-- end of content area -->
+        ~[wc:admin_footer_css]
+    </body>
 </html>
 [/if]
