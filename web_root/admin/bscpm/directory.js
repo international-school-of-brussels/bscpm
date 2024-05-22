@@ -238,40 +238,40 @@ function createContextMenus() {
                     $('#new p.validateTips').html(message);
                     $('#new').dialog('open');
                     $('#newAssetType').val('file');
-                    $('#newAssetPath').val($($(this).context).attr('item-path'));
+                    $('#newAssetPath').val($(this).attr('item-path'));
                     $('#new').dialog('open');
                 },
             },
             deleteFile: {
                 name: 'Delete File',
                 callback: function (key, opt) {
-                    var path = $($(this).context).attr('item-path') + '/' + $($(this).context).attr('item-name');
+                    var path = $(this).attr('item-path') + '/' + $(this).attr('item-name');
                     console.log('delete file:' + path);
-                    deleteFile(path, $($(this).context));
+                    deleteFile(path, $(this));
                     return true;
                 },
             },
             loadOriginal: {
                 name: 'View Original',
                 callback: function (key, opt) {
-                    path = $($(this).context).attr('item-path');
-                    filename = $($(this).context).attr('item-name');
+                    path = $(this).attr('item-path');
+                    filename = $(this).attr('item-name');
                     loadFile(path, filename, true, 'original');
                 },
             },
             compareOriginal: {
                 name: 'Compare Original',
                 callback: function (key, opt) {
-                    path = $($(this).context).attr('item-path');
-                    filename = $($(this).context).attr('item-name');
+                    path = $(this).attr('item-path');
+                    filename = $(this).attr('item-name');
                     loadFile(path, filename, true, 'compare', -1);
                 },
             } /*,
             "seeVersions":{
                 name:"See Version",
                 callback:function(key,opt){
-                    path=$($(this).context).attr('item-path');
-                    filename=$($(this).context).attr('item-name');
+                    path=$(this).attr('item-path');
+                    filename=$(this).attr('item-name');
                     $("#versionPath").val(path);
                     $("#versionFileName").val(filename);
                     custom=$("#versionCustom").val("true");
@@ -298,7 +298,7 @@ function createContextMenus() {
             refresh: {
                 name: 'Refresh',
                 callback: function (key, opt) {
-                    refreshDirectory($($(this).context));
+                    refreshDirectory($(this));
                     return true;
                 },
             },
@@ -312,7 +312,7 @@ function createContextMenus() {
                     $('#new').dialog('open');
                     $('#newAssetType').val('file');
                     $('#newAssetPath').val(
-                        $($(this).context).attr('item-path') + '/' + $($(this).context).attr('item-name')
+                        $(this).attr('item-path') + '/' + $(this).attr('item-name')
                     );
                     $('#new').dialog('open');
                 },
@@ -325,7 +325,7 @@ function createContextMenus() {
                     $('#new p.validateTips').html(message);
                     $('#newAssetType').val('folder');
                     $('#newAssetPath').val(
-                        $($(this).context).attr('item-path') + '/' + $($(this).context).attr('item-name')
+                        $(this).attr('item-path') + '/' + $(this).attr('item-name')
                     );
                     $('#new').dialog('open');
                 },
@@ -334,7 +334,7 @@ function createContextMenus() {
                 name: 'Delete',
                 callback: function (key, opt) {
                     //get the directory to work in
-                    var directory = $($(this).context);
+                    var directory = $(this);
                     var containingItems = directory.find('li[item-custom=true]');
 
                     var img = $('<img />')
@@ -408,10 +408,10 @@ function createContextMenus() {
                 callback: function (key, opt) {
                     $('#uploadDia').dialog('option', 'title', 'Upload File');
                     $('#pathLabel').html(
-                        $($(this).context).attr('item-path') + '/' + $($(this).context).attr('item-name')
+                        $(this).attr('item-path') + '/' + $(this).attr('item-name')
                     );
                     $('#fileUploadForm_filePath').val(
-                        '/' + $($(this).context).attr('item-path') + '/' + $($(this).context).attr('item-name')
+                        '/' + $(this).attr('item-path') + '/' + $(this).attr('item-name')
                     );
                     $('#uploadDia').dialog('open');
                 },
