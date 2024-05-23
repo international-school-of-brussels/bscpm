@@ -10,7 +10,9 @@ I updated the plugin for our school's personal needs. The only files modified we
 - web_root/admin/bscpm/directory.html
 
 ## Installation:
-To install, replace the two files mentioned above (`home.html` & `directory.html`) using the built in Custom Page Manager (url: `https://yourschoolPS.com/admin/customization/home.html`).
+##### Two methods to install:
+- Download the `bscpm.version.zip` file from the [releases](https://github.com/international-school-of-brussels/bscpm/releases) page and install it like a normal plugin. **Please remove the original Blue Steel plugin first**.
+- Replace the two files mentioned above (`home.html` & `directory.html`) using the built in Custom Page Manager (url: `https://yourschoolPS.com/admin/customization/home.html`).
 
 ## Original list of features from PowerSource:
 **Make sure you have access to the stock CPM before using.**
